@@ -44,30 +44,25 @@ job('NodeJS Docker example') {
     }
 }
 
+pipelineJob('boilerplate-pipeline') {
 
-job('boilerplate-pipeline') {
-    scm {
-        git('git://github.com/phatcrackar/docker-cicd.git') {  node -> // is hudson.plugins.git.GitSCM
-            node / gitConfigName('DSL User')
-            node / gitConfigEmail('jenkins-dsl@newtech.academy')
+  def repo = 'git://github.com/phatcrackar/docker-cicd.git'
+
+  triggers {
+    scm('H/5 * * * *')
+  }
+  description("Pipeline for $repo")
+
+  definition {
+    cpsScm {
+      scm {
+        git {
+          remote { url(repo) }
+          branches('master', '**/feature*')
+          scriptPath('./basics/misc/Jenkinsfile')
+          extensions { }  // required as otherwise it may try to tag the repo, which you may not want
         }
+      }
     }
-    triggers {
-        scm('H/5 * * * *')
-    }
-    wrappers {
-        nodejs('nodejs_demo') 
-    }
-    steps {
-        dockerBuildAndPublish {
-            repositoryName('phatcrackar/jenkins-demo') //qa / dev
-            tag('${GIT_REVISION,length=9}')
-            buildContext('./basics')
-            registryCredentials('dockerhub')
-            forcePull(false)
-            forceTag(false)
-            createFingerprints(false)
-            skipDecorate()
-        }
-    }
+  }
 }
