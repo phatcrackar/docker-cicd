@@ -28,7 +28,7 @@ job('NodeJS Docker example') {
         scm('H/5 * * * *')
     }
     wrappers {
-        nodejs('nodejs-new') 
+        nodejs('nodejs_demo') 
     }
     steps {
         dockerBuildAndPublish {
