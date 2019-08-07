@@ -34,11 +34,11 @@ job('NodeJS Docker example') {
         dockerBuildAndPublish {
             repositoryName('phatcrackar/jenkins-demo') //qa / dev
             tag('${GIT_REVISION,length=9}')
+            buildContext('./basics')
             registryCredentials('dockerhub')
             forcePull(false)
             forceTag(false)
             createFingerprints(false)
-            buildContext('./basics/Dockerfile')
             skipDecorate()
         }
     }
