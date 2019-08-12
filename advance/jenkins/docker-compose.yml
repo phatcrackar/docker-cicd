@@ -2,16 +2,16 @@ version: '3.1'
 services:
     jenkins:
         build: ./master
-        image: jenkins-jb/master:1.0
+        image: phatcrackar/master-jenkins:1.0
         container_name: jenkins
         ports:
-            - '8080:8080'
+            - '8081:8080'
             - '50000:50000'
         networks: 
             - jb
     jenkins-slave:
         build: ./slave
-        image: jenkins-jb/slave:1.0
+        image: phatcrackar/slave-jenkins:1.0
         container_name: jenkins-slave
         restart: always
         environment:
